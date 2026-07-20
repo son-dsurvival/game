@@ -239,7 +239,7 @@ def get_drive_file_text(file_id: str) -> tuple[dict, str]:
         )
 
     return metadata, text
-
+logger = logging.getLogger("uvicorn.error")
 @app.get("/")
 def home():
     return {
@@ -287,6 +287,9 @@ def list_drive_files(
             status_code=502,
             detail=f"Google Drive API error: {error}",
         ) from error
+GOOGLE_DOC_MIME = "application/vnd.google-apps.document"
+
+
 @app.get("/documents/{file_id}")
 def read_drive_document(
     file_id: str,
@@ -299,16 +302,70 @@ def read_drive_document(
     _: None = Depends(verify_api_key),
 ):
     try:
-        metadata, text = get_drive_file_text(file_id)
+        metadata = (
+            drive_service.files()
+            .get(
+                fileId=file_id,
+                fields=(
+                    "id,"
+                    "name,"
+                    "mimeType,"
+                    "parents,"
+                    "webViewLink,"
+                    "modifiedTime"
+                ),
+            )
+            .execute()
+        )
+
+        parents = metadata.get("parents", [])
+
+        if FOLDER_ID not in parents:
+            raise HTTPException(
+                status_code=403,
+                detail="File is outside the authorised folder.",
+            )
+
+        mime_type = metadata.get("mimeType")
+
+        if mime_type != GOOGLE_DOC_MIME:
+            raise HTTPException(
+                status_code=415,
+                detail=f"Unsupported file type: {mime_type}",
+            )
+
+        exported_bytes = (
+            drive_service.files()
+            .export_media(
+                fileId=file_id,
+                mimeType="text/plain",
+            )
+            .execute()
+        )
+
+        if not isinstance(exported_bytes, (bytes, bytearray)):
+            raise RuntimeError(
+                f"Unexpected export result: {type(exported_bytes).__name__}"
+            )
+
+        text = exported_bytes.decode(
+            "utf-8",
+            errors="replace",
+        ).strip()
+
+        if not text:
+            raise HTTPException(
+                status_code=422,
+                detail="The document contains no readable text.",
+            )
 
         if start >= len(text):
             raise HTTPException(
                 status_code=416,
-                detail="The requested start position exceeds the document length.",
+                detail="Start position exceeds document length.",
             )
 
         end = min(start + max_chars, len(text))
-        content = text[start:end]
 
         return {
             "file_id": metadata["id"],
@@ -316,7 +373,7 @@ def read_drive_document(
             "mime_type": metadata["mimeType"],
             "modified_time": metadata.get("modifiedTime"),
             "url": metadata.get("webViewLink"),
-            "content": content,
+            "content": text[start:end],
             "start": start,
             "end": end,
             "total_characters": len(text),
@@ -328,20 +385,24 @@ def read_drive_document(
         raise
 
     except HttpError as error:
-        logger.exception("Google Drive document request failed")
+        logger.exception("Google Drive export failed")
 
         raise HTTPException(
             status_code=502,
-            detail=f"Google Drive API error: {error}",
+            detail={
+                "error_type": "GoogleDriveHttpError",
+                "google_status": error.resp.status,
+                "message": str(error),
+            },
         ) from error
 
     except Exception as error:
-        logger.exception("Unexpected document-reading error")
+        logger.exception("Document reading failed")
 
         raise HTTPException(
             status_code=500,
-            detail=(
-                "Unexpected document-reading error: "
-                f"{type(error).__name__}"
-            ),
+            detail={
+                "error_type": type(error).__name__,
+                "message": str(error),
+            },
         ) from error
