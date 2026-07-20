@@ -1,20 +1,22 @@
+import json
 import os
-from pathlib import Path
 
-from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import (
+    Depends,
+    FastAPI,
+    Header,
+    HTTPException,
+)
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 
-load_dotenv()
-
 FOLDER_ID = os.getenv("GOOGLE_DRIVE_FOLDER_ID")
-CREDENTIALS_FILE = os.getenv(
-    "GOOGLE_SERVICE_ACCOUNT_FILE",
-    "service-account.json",
+GOOGLE_SERVICE_ACCOUNT_JSON = os.getenv(
+    "GOOGLE_SERVICE_ACCOUNT_JSON"
 )
+ACTION_API_KEY = os.getenv("ACTION_API_KEY")
 
 SCOPES = [
     "https://www.googleapis.com/auth/drive.readonly"
@@ -23,17 +25,32 @@ SCOPES = [
 
 if not FOLDER_ID:
     raise RuntimeError(
-        "GOOGLE_DRIVE_FOLDER_ID is missing from the .env file."
+        "GOOGLE_DRIVE_FOLDER_ID environment variable is missing."
     )
 
-if not Path(CREDENTIALS_FILE).exists():
+if not GOOGLE_SERVICE_ACCOUNT_JSON:
     raise RuntimeError(
-        f"Credentials file not found: {CREDENTIALS_FILE}"
+        "GOOGLE_SERVICE_ACCOUNT_JSON environment variable is missing."
+    )
+
+if not ACTION_API_KEY:
+    raise RuntimeError(
+        "ACTION_API_KEY environment variable is missing."
     )
 
 
-credentials = service_account.Credentials.from_service_account_file(
-    CREDENTIALS_FILE,
+try:
+    service_account_info = json.loads(
+        GOOGLE_SERVICE_ACCOUNT_JSON
+    )
+except json.JSONDecodeError as error:
+    raise RuntimeError(
+        "GOOGLE_SERVICE_ACCOUNT_JSON is not valid JSON."
+    ) from error
+
+
+credentials = service_account.Credentials.from_service_account_info(
+    service_account_info,
     scopes=SCOPES,
 )
 
@@ -44,10 +61,21 @@ drive_service = build(
     cache_discovery=False,
 )
 
+
 app = FastAPI(
     title="Google Drive Knowledge API",
     version="1.0.0",
 )
+
+
+def verify_api_key(
+    x_api_key: str = Header(..., alias="X-API-Key"),
+) -> None:
+    if x_api_key != ACTION_API_KEY:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid API key.",
+        )
 
 
 @app.get("/")
@@ -59,11 +87,9 @@ def home():
 
 
 @app.get("/files")
-def list_drive_files():
-    """
-    List files directly inside the configured Google Drive folder.
-    """
-
+def list_drive_files(
+    _: None = Depends(verify_api_key),
+):
     try:
         query = f"'{FOLDER_ID}' in parents and trashed = false"
 
@@ -96,6 +122,6 @@ def list_drive_files():
 
     except HttpError as error:
         raise HTTPException(
-            status_code=500,
+            status_code=502,
             detail=f"Google Drive API error: {error}",
         ) from error
