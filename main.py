@@ -239,6 +239,54 @@ def get_drive_file_text(file_id: str) -> tuple[dict, str]:
         )
 
     return metadata, text
+
+@app.get("/")
+def home():
+    return {
+        "status": "running",
+        "message": "Google Drive Knowledge API is running.",
+    }
+
+
+@app.get("/files")
+def list_drive_files(
+    _: None = Depends(verify_api_key),
+):
+    try:
+        query = f"'{FOLDER_ID}' in parents and trashed = false"
+
+        response = (
+            drive_service.files()
+            .list(
+                q=query,
+                spaces="drive",
+                pageSize=100,
+                fields=(
+                    "files("
+                    "id,"
+                    "name,"
+                    "mimeType,"
+                    "modifiedTime,"
+                    "webViewLink"
+                    ")"
+                ),
+            )
+            .execute()
+        )
+
+        files = response.get("files", [])
+
+        return {
+            "folder_id": FOLDER_ID,
+            "count": len(files),
+            "files": files,
+        }
+
+    except HttpError as error:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Google Drive API error: {error}",
+        ) from error
 @app.get("/documents/{file_id}")
 def read_drive_document(
     file_id: str,
@@ -296,51 +344,4 @@ def read_drive_document(
                 "Unexpected document-reading error: "
                 f"{type(error).__name__}"
             ),
-        ) from error
-@app.get("/")
-def home():
-    return {
-        "status": "running",
-        "message": "Google Drive Knowledge API is running.",
-    }
-
-
-@app.get("/files")
-def list_drive_files(
-    _: None = Depends(verify_api_key),
-):
-    try:
-        query = f"'{FOLDER_ID}' in parents and trashed = false"
-
-        response = (
-            drive_service.files()
-            .list(
-                q=query,
-                spaces="drive",
-                pageSize=100,
-                fields=(
-                    "files("
-                    "id,"
-                    "name,"
-                    "mimeType,"
-                    "modifiedTime,"
-                    "webViewLink"
-                    ")"
-                ),
-            )
-            .execute()
-        )
-
-        files = response.get("files", [])
-
-        return {
-            "folder_id": FOLDER_ID,
-            "count": len(files),
-            "files": files,
-        }
-
-    except HttpError as error:
-        raise HTTPException(
-            status_code=502,
-            detail=f"Google Drive API error: {error}",
         ) from error
