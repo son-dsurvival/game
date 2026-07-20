@@ -1,0 +1,5 @@
+.venv/
+.env
+hybrid-poetry-466908-e0-4ecd3c5e34e2.json
+__pycache__/
+*.pyc
