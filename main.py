@@ -234,6 +234,64 @@ def get_drive_file_text(file_id: str) -> tuple[dict, str]:
         )
 
     return metadata, text
+@app.get("/documents/{file_id}")
+def read_drive_document(
+    file_id: str,
+    start: int = Query(default=0, ge=0),
+    max_chars: int = Query(
+        default=12000,
+        ge=1000,
+        le=30000,
+    ),
+    _: None = Depends(verify_api_key),
+):
+    try:
+        metadata, text = get_drive_file_text(file_id)
+
+        if start >= len(text):
+            raise HTTPException(
+                status_code=416,
+                detail="The requested start position exceeds the document length.",
+            )
+
+        end = min(start + max_chars, len(text))
+        content = text[start:end]
+
+        return {
+            "file_id": metadata["id"],
+            "title": metadata["name"],
+            "mime_type": metadata["mimeType"],
+            "modified_time": metadata.get("modifiedTime"),
+            "url": metadata.get("webViewLink"),
+            "content": content,
+            "start": start,
+            "end": end,
+            "total_characters": len(text),
+            "truncated": end < len(text),
+            "next_start": end if end < len(text) else None,
+        }
+
+    except HTTPException:
+        raise
+
+    except HttpError as error:
+        logger.exception("Google Drive document request failed")
+
+        raise HTTPException(
+            status_code=502,
+            detail=f"Google Drive API error: {error}",
+        ) from error
+
+    except Exception as error:
+        logger.exception("Unexpected document-reading error")
+
+        raise HTTPException(
+            status_code=500,
+            detail=(
+                "Unexpected document-reading error: "
+                f"{type(error).__name__}"
+            ),
+        ) from error
 @app.get("/")
 def home():
     return {
