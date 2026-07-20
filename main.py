@@ -69,14 +69,25 @@ app = FastAPI(
 
 
 def verify_api_key(
-    x_api_key: str = Header(..., alias="X-API-Key"),
+    authorization: str | None = Header(default=None),
 ) -> None:
-    if x_api_key != ACTION_API_KEY:
+    if not authorization:
+        raise HTTPException(
+            status_code=401,
+            detail="Authorization header is missing.",
+        )
+
+    scheme, _, supplied_key = authorization.partition(" ")
+
+    if (
+        scheme.lower() != "bearer"
+        or not supplied_key
+        or not secrets.compare_digest(supplied_key, ACTION_API_KEY)
+    ):
         raise HTTPException(
             status_code=401,
             detail="Invalid API key.",
         )
-
 
 @app.get("/")
 def home():
