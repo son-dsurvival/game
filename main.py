@@ -10,6 +10,11 @@ from fastapi import (
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from io import BytesIO
+
+from docx import Document
+from fastapi import Depends, FastAPI, Header, HTTPException, Query
+from pypdf import PdfReader
 
 
 FOLDER_ID = os.getenv("GOOGLE_DRIVE_FOLDER_ID")
