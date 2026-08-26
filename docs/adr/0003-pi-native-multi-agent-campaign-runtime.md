@@ -1,0 +1,3 @@
+# Use a Pi-native multi-agent campaign runtime
+
+The campaign will replace single-model turn handling with a three-stage Pi-native runtime: a Lead Resolver reconciles read-only domain specialists and has sole authority over outcomes, a Narrator renders a visibility-filtered brief under independent fidelity validation, and a single-writer persistence stage atomically records the validated result before it is displayed. We will use `pi-agents` for isolated, schema-validated reasoning roles and a custom project-local Pi extension for trusted orchestration, deterministic dice, locking, validation, transaction journaling, Git commits, recording, and output assembly; this preserves specialized reasoning without allowing generative agents to mutate authoritative state directly.

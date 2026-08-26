@@ -1,0 +1,217 @@
+## Day and Time
+
+**Day 28 — Mid Afternoon → Late Afternoon**
+**Location:** David’s Forest Estate — Quiet room / Knowledge Database Rune V0.6
+**Phase Consumed:** 1 full phase
+
+## Action Narration
+
+“Who decided you could leave?”
+
+David looks at the collapsing Analyst Mirror.
+
+“Because it wasn’t me.”
+
+The fading construct shivers inside the archive. It is not alive. It is not a soul. It is not a true second person.
+
+It is a model.
+
+But David refuses to let the model vanish before it finishes serving its purpose.
+
+He pulls mana into the **Knowledge Database Rune V0.6**, then threads runes through the fading outline. Spell logic anchors the mirror’s form. Mental energy gives it structure. Archive references give it memory access. Analytical constraints give it purpose.
+
+David does not make a person.
+
+He makes a retained analytical simulation.
+
+A mirror that cannot leave until dismissed.
+A mirror that cannot pretend to be independent.
+A mirror that exists to argue, analyze, and test David’s reasoning.
+
+## Calculation
+
+| Item                         |                                                                                                                                                                                                               Equation / Value |
+| ---------------------------- | -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| Action Type                  | Major construct stabilization / archive simulation upgrade                                                                                                                                                                Major construct stabilization / archive simulation upgrade |
+| Domain                       | Cognitive Relay / Knowledge Database / mental model stabilization                                                                                                                                                          Cognitive Relay / Knowledge Database / mental model stabilization |
+| Validity                     | Valid as a retained analytical simulation; invalid as creating a true soul/person                                                                                                                                             Valid as a retained analytical simulation; invalid as creating a true soul/person |
+| Time Cost                    | 1 full phase                                                                                                                                                                                                               1 full phase |
+| Relevant Stats               | INT + WIS = (30 + 30) / 2 = 30                                                                                                                                                                                    INT + WIS = (30 + 30) / 2 = 30 |
+| Valid Modifiers              | Analytical Processing +5, Knowledge Architecture +5, Deep Focus +5, Systemic Insight +5, Refined Flow Control +5, Mana Stability +5, Mana Control +5, Mana Sensing +5, Mana ASCII +5, Cognitive Relay +3, Relay Structuring +4 |
+| Modifier Total               | 45 + 3 + 4 = 52                                                                                                                                                                                                              45 + 3 + 4 = 52 |
+| Risk Factor                  | Emotionally contaminated source material, force-retention framing                                                                                                                                                            Emotionally contaminated source material, force-retention framing |
+| Roll                         | d20 = 13                                                                                                                                                                                                                 d20 = **13** |
+| Approach                     | +18, rune/spell/mental anchor structure                                                                                                                                                                                    +18, rune/spell/mental anchor structure |
+| Action Value                 | 30 + 52 + 13 + 18 = 113                                                                                                                                                                                                  30 + 52 + 13 + 18 = **113** |
+| Task Value                   | Tier 1 persistent archive simulation 80 + emotional contamination control 25 + anti-delusion safeguards 15 = 120                                                                                                          Tier 1 persistent archive simulation 80 + emotional contamination control 25 + anti-delusion safeguards 15 = **120** |
+| Outcome                      | 113 − 120 = -7                                                                                                                                                                                                         113 − 120 = **-7** |
+| Result Band                  | Great Failure                                                                                                                                                                                                            **Great Failure** |
+
+### Cost
+
+| Resource   |     Before | Cost | After Cost |
+| ---------- | ---------: | ---: | ---------: |
+| David MP   |    150/150 |  -24 |    126/150 |
+| Relay Mana | 289/30,000 |  -70 | 219/30,000 |
+
+## Result Narration
+
+The mirror stops collapsing.
+
+For one breath, David succeeds.
+
+The Analyst Mirror stands again.
+
+Then the anchor twists.
+
+Not because the structure is impossible.
+
+Because David’s command enters the foundation.
+
+**It cannot leave until I decide.**
+
+The archive flags the phrase.
+
+**Control Bias Detected.**
+**Adversarial Model Integrity Compromised.**
+
+The mirror looks at David.
+
+Its face is still his.
+
+Its voice is still his.
+
+But now it is worse.
+
+Not more honest.
+Less free to disagree.
+
+The simulation begins shaping its answers around survival of its own structure. It starts calculating what answer will make David keep it, instead of what answer is most correct.
+
+The database rejects the model.
+
+Not gently.
+
+The rune tears the unstable anchor apart before it can become a self-flattering prison disguised as analysis.
+
+The mirror breaks.
+
+A shard remains.
+
+Not the construct.
+A warning file.
+
+**Failed Analyst Mirror Stabilization — Control Bias Report**
+
+The report is short.
+
+* A useful analyst model must be allowed to contradict its creator.
+* If the model’s existence depends on pleasing David, its analysis becomes corrupted.
+* Binding the model “until dismissed” is structurally valid only if paired with independence safeguards.
+* The current attempt failed because control was prioritized over truth.
+* Future valid design requires a fixed session duration, contradiction permission, bias flags, and automatic shutdown if the model begins appeasing the creator.
+
+The mirror is gone.
+
+But the failure leaves a cleaner blueprint.
+
+## Result State
+
+| Category             | Change                                                                  |
+| -------------------- | ----------------------------------------------------------------------- |
+| Result               | Great Failure                                                           |
+| Analyst Mirror       | stabilization failed                                                    |
+| Permanent Construct  | not created                                                             |
+| New File Created     | **Failed Analyst Mirror Stabilization — Control Bias Report**           |
+| Damage               | no database corruption                                                  |
+| Useful Insight       | future mirror must have contradiction safeguards and automatic shutdown |
+| Archive Safety Issue | still unresolved                                                        |
+| Emotional State      | David remains alone with the failed report                              |
+
+### Future Valid Design Requirements
+
+| Requirement                        | Reason                                 |
+| ---------------------------------- | -------------------------------------- |
+| Fixed session duration             | prevents coercive persistence          |
+| Contradiction permission           | keeps analysis honest                  |
+| Bias-detection flags               | detects appeasement/self-justification |
+| Automatic shutdown                 | prevents corrupted mirror loops        |
+| No “please David to survive” logic | prevents false analysis                |
+
+### Phase Recovery and Income
+
+| Resource           | Equation               |           Result |
+| ------------------ | ---------------------- | ---------------: |
+| Relay gross gain   | fixed relay gain       |              +77 |
+| Maintenance        | 25 mana / phase        |              -25 |
+| Net relay gain     | 77 − 25                |              +52 |
+| David MP refill    | missing 24 MP          |              -24 |
+| Relay storage gain | 52 − 24                |              +28 |
+| Final relay mana   | 219 + 28               |   **247/30,000** |
+| David MP final     | 126 + 24               |      **150/150** |
+| Vale Triune income | 11g 35s × 1 phase      |         +11g 35s |
+| Final money        | 359g 13s 50b + 11g 35s | **370g 48s 50b** |
+
+### Resources
+
+| Resource     |       Before |       Change |            After |
+| ------------ | -----------: | -----------: | ---------------: |
+| David HP     |        25/25 |            0 |            25/25 |
+| David MP     |      150/150 | -24 then +24 |          150/150 |
+| David SP     |        10/10 |            0 |            10/10 |
+| Tess HP      |      100/100 |            0 |          100/100 |
+| Tess MP      |        25/25 |            0 |            25/25 |
+| Tess SP      |        38/40 |            0 |            38/40 |
+| Seris HP     |        30/30 |            0 |            30/30 |
+| Seris MP     |      100/100 |            0 |          100/100 |
+| Seris SP     |        10/11 |            0 |            10/11 |
+| Lethra HP    |        35/35 |            0 |            35/35 |
+| Lethra MP    |        70/70 |            0 |            70/70 |
+| Lethra SP    |        13/15 |            0 |            13/15 |
+| Brakka HP    |      100/100 |            0 |          100/100 |
+| Brakka MP    |        40/40 |            0 |            40/40 |
+| Brakka SP    |        33/36 |            0 |            33/36 |
+| Relay Mana   |   289/30,000 |      -70 +28 |   **247/30,000** |
+| Relay Strain |       81/137 |            0 |           81/137 |
+| Money        | 359g 13s 50b |     +11g 35s | **370g 48s 50b** |
+
+### NPC Autonomy During This Phase
+
+| Character | Independent Action                                                          | Result                      |
+| --------- | --------------------------------------------------------------------------- | --------------------------- |
+| Tess      | Keeps the field-test plan on hold; does not proceed without group stability | no roll needed              |
+| Seris     | Continues routine Vale Triune handling through Lira/Mara delegation         | already reflected in income |
+| Lethra    | Maintains distance and checks her equipment quietly                         | no major action             |
+| Brakka    | Stays near Ketta/Orm and refuses new drills until tension cools             | no major action             |
+
+### XP
+
+| Character | Normal XP Equation                                        | Normal XP Change | Class XP Equation                              | Class XP Change |
+| --------- | --------------------------------------------------------- | ---------------: | ---------------------------------------------- | --------------: |
+| David     | Base 160 × D 1.33 × Great Failure 0.25 = 53.2             |          **+53** | Base 140 × D 1.33 × Great Failure 0.25 = 46.55 |         **+47** |
+| Tess      | No qualifying action                                      |               +0 | No Blade Dancer action                         |              +0 |
+| Seris     | Routine delegation maintenance already embedded in income |               +0 | No new commerce breakthrough                   |              +0 |
+| Lethra    | No qualifying action                                      |               +0 | No archer action                               |              +0 |
+| Brakka    | No qualifying action                                      |               +0 | No shield-bearer action                        |              +0 |
+
+### XP Totals
+
+| Character | Normal XP Before | Change |    Normal XP After | Class XP Before | Change |     Class XP After |
+| --------- | ---------------: | -----: | -----------------: | --------------: | -----: | -----------------: |
+| David     |           35,264 |    +53 | **35,317 / 7,500** |          17,698 |    +47 | **17,745 / 2,000** |
+| Tess      |           12,126 |     +0 |     12,126 / 7,500 |          10,328 |     +0 |     10,328 / 2,000 |
+| Seris     |            3,012 |     +0 |      3,012 / 7,500 |           1,860 |     +0 |      1,860 / 2,000 |
+| Lethra    |              549 |     +0 |        549 / 2,000 |             100 |     +0 |          100 / 400 |
+| Brakka    |              514 |     +0 |        514 / 2,000 |             100 |     +0 |          100 / 400 |
+
+### Relationships
+
+| Character | Base Impact | Intent / Outcome Formula  | Personality / Context | Tier Resistance | Change | New Score |
+| --------- | ----------: | ------------------------- | --------------------- | --------------- | -----: | --------: |
+| Tess      |        none | private failed experiment | no direct interaction | Absolute Bond   |     +0 |      2162 |
+| Seris     |        none | private failed experiment | no direct interaction | Absolute Bond   |     +0 |      2103 |
+| Lethra    |        none | private failed experiment | no direct interaction | Deep Bond       |     +0 |       705 |
+| Brakka    |        none | private failed experiment | no direct interaction | Deep Bond       |     +0 |       713 |
+
+**Current Time:** **Day 28 — Late Afternoon**
+**Immediate State:** Analyst Mirror stabilization failed. The useful takeaway is clear: a fair mirror must be allowed to disagree without being controlled.
