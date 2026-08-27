@@ -1,0 +1,16 @@
+{
+  "name": "ai-dm-agent-orchestra",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check:runtime": "npm run check:runtime:config && npm run smoke:runtime",
+    "check:runtime:config": "node scripts/check-runtime.mjs",
+    "smoke:runtime": "node scripts/run-runtime-smoke.mjs",
+    "test": "node --test",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "typescript": "5.9.3"
+  }
+}

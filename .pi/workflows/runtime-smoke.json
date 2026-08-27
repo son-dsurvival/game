@@ -1,0 +1,60 @@
+{
+  "name": "runtime-smoke",
+  "description": "Verify the project-local Pi orchestra with one read-only structured role",
+  "trigger": "when the user explicitly asks to run the campaign runtime smoke check",
+  "display": "explanation",
+  "agent": "runtime-smoke",
+  "scope": "project",
+  "task": "Read the title and opening description in CONTEXT.md. Submit a smoke handoff with turnId runtime-smoke, role runtime-smoke, one evidence citation to that source, one finding that identifies the campaign context, empty snapshot hashes, applicable rules, excluded rules, candidate values, assumptions, unresolved gaps, evidence requests, required-domain flags, conflict flags, recommendations, and consequence branches, plus a short explanation confirming read-only structured runtime discovery.",
+  "json": {
+    "type": "object",
+    "required": [
+      "turnId",
+      "role",
+      "evidenceCitations",
+      "snapshotHashes",
+      "applicableRules",
+      "excludedRules",
+      "findings",
+      "candidateValues",
+      "assumptions",
+      "unresolvedGaps",
+      "evidenceRequests",
+      "requiredDomainFlags",
+      "conflictFlags",
+      "recommendations",
+      "consequenceBranches"
+    ],
+    "properties": {
+      "turnId": { "const": "runtime-smoke" },
+      "role": { "const": "runtime-smoke" },
+      "evidenceCitations": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "required": ["source", "heading"],
+          "properties": {
+            "source": { "const": "CONTEXT.md" },
+            "heading": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        }
+      },
+      "snapshotHashes": { "type": "array", "maxItems": 0 },
+      "applicableRules": { "type": "array", "maxItems": 0 },
+      "excludedRules": { "type": "array", "maxItems": 0 },
+      "findings": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+      "candidateValues": { "type": "array", "maxItems": 0 },
+      "assumptions": { "type": "array", "maxItems": 0 },
+      "unresolvedGaps": { "type": "array", "maxItems": 0 },
+      "evidenceRequests": { "type": "array", "maxItems": 0 },
+      "requiredDomainFlags": { "type": "array", "maxItems": 0 },
+      "conflictFlags": { "type": "array", "maxItems": 0 },
+      "recommendations": { "type": "array", "maxItems": 0 },
+      "consequenceBranches": { "type": "array", "maxItems": 0 },
+      "explanation": { "type": "string", "minLength": 1 }
+    },
+    "additionalProperties": false
+  }
+}
