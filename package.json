@@ -6,6 +6,7 @@
     "check:runtime": "npm run check:runtime:config && npm run smoke:runtime",
     "check:runtime:config": "node scripts/check-runtime.mjs",
     "smoke:runtime": "node scripts/run-runtime-smoke.mjs",
+    "trace:persistence": "node scripts/run-turn-persistence-tracer.mjs",
     "test": "node --test",
     "typecheck": "tsc --noEmit"
   },
