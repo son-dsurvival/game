@@ -94,6 +94,7 @@ function git(repository, ...args) {
  *   repository: string,
  *   resolutionRecord: ResolutionRecord,
  *   presentation: string,
+ *   auditDetails?: Record<string, unknown>,
  *   injectFailureAfterMutationPath?: string
  * }} input
  */
@@ -167,6 +168,7 @@ export function persistSyntheticTurn(input) {
           turnId: plan.turnId,
           parentBaselineCommit,
           mutationPlan: plan,
+          ...(input.auditDetails === undefined ? {} : { auditDetails: input.auditDetails }),
         }, null, 2)}\n`,
       },
       { path: presentationPath, content: `${input.presentation}\n` },

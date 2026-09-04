@@ -5,6 +5,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
 
+import { createRolledAuditDetails, lockRollAssembly, rollAuditableDie } from "../src/rolled-action.mjs";
+
 import {
   auditMutationPlan,
   createMutationPlan,
@@ -142,6 +144,38 @@ test("synthetic turn persists every state change, audit, and presentation in one
       "David spends one gold sovereign on supplies.\n",
     );
     assert.match(git(repository, "log", "-1", "--format=%B"), /turn-tracer-001/);
+    assert.equal(git(repository, "status", "--porcelain"), "");
+  } finally {
+    rmSync(repository, { recursive: true, force: true });
+  }
+});
+
+test("atomic rolled turn commits calculation, dice proof, outcome, and mutations in its audit", () => {
+  const repository = createTracerRepository();
+  try {
+    const assembly = lockRollAssembly({ turnId: "turn-roll-001", expression: "1d20 + 2" });
+    const roll = rollAuditableDie({ hiddenDaySeed: "seed", requestHash: assembly.requestHash, turnId: assembly.turnId, rollIndex: 0, sides: 20 });
+    const resolutionRecord = {
+      turnId: "turn-roll-001",
+      baselineCommit: git(repository, "rev-parse", "HEAD"),
+      stateChanges: [{ path: "state/status.md", expectedBefore: "Gold: 10\n", after: "Gold: 8\n" }],
+    };
+    const result = persistSyntheticTurn({
+      repository,
+      resolutionRecord,
+      presentation: "The purchase succeeds.",
+      auditDetails: createRolledAuditDetails({
+        assembly,
+        roll,
+        consequences: { outcome: "success", mutations: resolutionRecord.stateChanges },
+      }),
+    });
+    assert.equal(result.persisted, true, JSON.stringify(result));
+    const audit = JSON.parse(readFileSync(join(repository, "turn-audit/turn-roll-001.json"), "utf8"));
+    assert.deepEqual(audit.auditDetails.lockedRollAssembly, assembly);
+    assert.deepEqual(audit.auditDetails.diceProof, roll);
+    assert.equal(audit.auditDetails.outcome, "success");
+    assert.deepEqual(audit.auditDetails.mutations, resolutionRecord.stateChanges);
     assert.equal(git(repository, "status", "--porcelain"), "");
   } finally {
     rmSync(repository, { recursive: true, force: true });
