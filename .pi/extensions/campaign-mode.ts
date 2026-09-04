@@ -47,7 +47,40 @@ export function installCampaignModeExtension(
   });
 
   const runTurn = options.runTurn ?? (async (envelope: CampaignTurnEnvelope) => {
-    pi.events.emit("campaign:turn-envelope", envelope);
+    const requestId = randomUUID();
+    const replyChannel = `pi-agents:rpc:reply:${requestId}`;
+    const started = await new Promise<{ runId: string }>((resolve, reject) => {
+      const unsubscribe = pi.events.on(replyChannel, (reply: unknown) => {
+        unsubscribe();
+        const value = reply as { success?: unknown, data?: unknown, error?: unknown };
+        if (value.success !== true || typeof value.data !== "object" || value.data === null) {
+          reject(new Error(typeof value.error === "string" ? value.error : "Campaign workflow did not start"));
+          return;
+        }
+        const data = value.data as { runId?: unknown };
+        if (typeof data.runId !== "string") {
+          reject(new Error("Campaign workflow returned no run identifier"));
+          return;
+        }
+        resolve({ runId: data.runId });
+      });
+      pi.events.emit("pi-agents:rpc:request", {
+        protocol: 1,
+        id: requestId,
+        caller: "campaign-mode",
+        op: "start",
+        params: { workflow: "non-roll-character-scene", params: { envelope: JSON.stringify(envelope) }, cwd: process.cwd() },
+      });
+    });
+    await new Promise<void>((resolve, reject) => {
+      const unsubscribe = pi.events.on("pi-agents:run-event", (raw: unknown) => {
+        const event = (raw as { event?: unknown }).event as { type?: unknown, runId?: unknown, status?: unknown, error?: unknown };
+        if (event?.type !== "run_completed" || event.runId !== started.runId) return;
+        unsubscribe();
+        if (event.status === "completed") resolve();
+        else reject(new Error(typeof event.error === "string" ? event.error : "Campaign workflow failed"));
+      });
+    });
   });
   let directiveTurnId: string | undefined;
 

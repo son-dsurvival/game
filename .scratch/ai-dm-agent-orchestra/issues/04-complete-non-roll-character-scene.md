@@ -5,7 +5,7 @@
 **Blocked by:** 02 — Add the Campaign Mode turn envelope; 03 — Prove Atomic Turn Persistence with a transaction tracer.
 
 **Status:** ready-for-agent
-**Completion:** implemented
+**Completion:** implemented — live Pi workflow admission and fixture validation complete
 
 - [x] The turn uses one immutable Turn Evidence Bundle with source citations and snapshot hashes.
 - [x] Deterministic and model routing jointly select the required core and Character Specialists.

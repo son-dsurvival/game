@@ -12,6 +12,7 @@ function createHostHarness(options = {}) {
   const notifications = [];
   const emitted = [];
   const execCalls = [];
+  const eventListeners = new Map();
   const pi = {
     registerCommand(name, options) {
       commands.set(name, options);
@@ -20,8 +21,25 @@ function createHostHarness(options = {}) {
       handlers.set(event, handler);
     },
     events: {
+      on(name, listener) {
+        const listeners = eventListeners.get(name) ?? new Set();
+        listeners.add(listener);
+        eventListeners.set(name, listeners);
+        return () => listeners.delete(listener);
+      },
       emit(name, payload) {
         emitted.push({ name, payload });
+        for (const listener of eventListeners.get(name) ?? []) listener(payload);
+        if (name === "pi-agents:rpc:request" && payload.op === "start") {
+          for (const listener of eventListeners.get(`pi-agents:rpc:reply:${payload.id}`) ?? []) {
+            listener({ success: true, data: { runId: "workflow-run" } });
+          }
+          setTimeout(() => {
+            for (const listener of eventListeners.get("pi-agents:run-event") ?? []) {
+              listener({ event: { type: "run_completed", runId: "workflow-run", status: "completed" } });
+            }
+          }, 0);
+        }
       },
     },
     exec: async (command, args) => {
@@ -110,14 +128,17 @@ test("Campaign Mode routes directives outside fiction and emits admitted Turn En
     host.ctx,
   );
   assert.deepEqual(action, { action: "handled" });
-  const admission = host.emitted.find(
-    (event) => event.name === "campaign:turn-envelope",
+  const request = host.emitted.find(
+    (event) => event.name === "pi-agents:rpc:request",
   );
-  assert.equal(admission.payload.classification, "in-game-input");
-  assert.equal(admission.payload.input, "I enter the workshop.");
-  assert.equal(admission.payload.mode, "shadow");
-  assert.deepEqual(admission.payload.baseline, { commit: "abc123" });
-  assert.match(admission.payload.turnId, /^turn-[0-9a-f-]{36}$/);
+  assert.equal(request.payload.op, "start");
+  assert.equal(request.payload.params.workflow, "non-roll-character-scene");
+  const envelope = JSON.parse(request.payload.params.params.envelope);
+  assert.equal(envelope.classification, "in-game-input");
+  assert.equal(envelope.input, "I enter the workshop.");
+  assert.equal(envelope.mode, "shadow");
+  assert.deepEqual(envelope.baseline, { commit: "abc123" });
+  assert.match(envelope.turnId, /^turn-[0-9a-f-]{36}$/);
 });
 
 test("braced directives retain shadow protection through full agent settlement", async () => {

@@ -1,0 +1,34 @@
+{
+  "name": "non-roll-character-scene",
+  "description": "Run the read-only analysis pass for a dialogue-focused campaign turn",
+  "trigger": "when the user explicitly asks to run a non-roll character scene",
+  "scope": "project",
+  "params": [{ "name": "envelope", "required": true }],
+  "flow": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "kind": "agent",
+        "name": "router",
+        "as": "routing",
+        "task": "Classify this Turn Envelope and return required domains: {params.envelope}",
+        "json": { "type": "object", "required": ["requiredDomains"], "properties": { "requiredDomains": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false }
+      },
+      {
+        "kind": "parallel",
+        "as": "specialists",
+        "branches": {
+          "canon": { "kind": "agent", "name": "canon-retriever", "task": "Build cited evidence for: {params.envelope}" },
+          "mechanics": { "kind": "agent", "name": "mechanics-specialist", "task": "Assess non-roll mechanics for: {params.envelope}" },
+          "state": { "kind": "agent", "name": "state-specialist", "task": "Assess current state for: {params.envelope}" },
+          "character": { "kind": "agent", "name": "character-specialist", "task": "Assess character truth for: {params.envelope}" }
+        }
+      },
+      {
+        "kind": "agent",
+        "name": "lead-resolver",
+        "task": "Issue a Resolution Record and Narration Brief from routing {routing} and specialist handoffs {specialists}."
+      }
+    ]
+  }
+}
