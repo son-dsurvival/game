@@ -5,9 +5,10 @@
 **Blocked by:** 05 — Resolve a rolled state-changing action; 06 — Track named-character autonomy end to end.
 
 **Status:** ready-for-agent
+**Completion:** implemented
 
-- [ ] Combat routing invokes every required Mechanics, State, Character, and Combat finding before rolling.
-- [ ] Tactical orders, opposition capabilities, equipment, skills, situational factors, and exclusions appear in the locked calculation.
-- [ ] Risk-Proportional Consequences and Fictional Danger Signals agree with the resolved threat.
-- [ ] Damage, conditions, time, consumables, and autonomy outcomes persist atomically.
-- [ ] Combat narration passes the required visibility, fidelity, structure, and length checks.
+- [x] Combat routing invokes every required Mechanics, State, Character, and Combat finding before rolling.
+- [x] Tactical orders, opposition capabilities, equipment, skills, situational factors, and exclusions appear in the locked calculation.
+- [x] Risk-Proportional Consequences and Fictional Danger Signals agree with the resolved threat.
+- [x] Damage, conditions, time, consumables, and autonomy outcomes persist atomically.
+- [x] Combat narration passes the required visibility, fidelity, structure, and length checks.
