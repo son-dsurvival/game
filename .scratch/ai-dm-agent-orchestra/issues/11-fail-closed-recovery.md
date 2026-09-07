@@ -5,10 +5,11 @@
 **Blocked by:** 04 — Resolve a complete non-roll character scene; 05 — Resolve a rolled state-changing action.
 
 **Status:** ready-for-agent
+**Completion:** implemented
 
-- [ ] Evidence Requests and late specialist expansion stop after two rounds and then apply the missing-information protocol.
-- [ ] A required specialist receives one retry and a second failure stops the turn with the failed role identified.
-- [ ] Specialist disagreements remain visible in the Resolution Conflict Trace and are decided only by the Lead Resolver.
-- [ ] Narration receives at most two revisions after its initial attempt, without changing the Resolution Record or roll.
-- [ ] Exhausted narration creates a reusable Pending Resolution, while stale evidence invalidates it explicitly.
-- [ ] Persistence rejection writes nothing, explains the exact conflict, and produces no game effect or automatic re-resolution.
+- [x] Evidence Requests and late specialist expansion stop after two rounds and then apply the missing-information protocol.
+- [x] A required specialist receives one retry and a second failure stops the turn with the failed role identified.
+- [x] Specialist disagreements remain visible in the Resolution Conflict Trace and are decided only by the Lead Resolver.
+- [x] Narration receives at most two revisions after its initial attempt, without changing the Resolution Record or roll.
+- [x] Exhausted narration creates a reusable Pending Resolution, while stale evidence invalidates it explicitly.
+- [x] Persistence rejection writes nothing, explains the exact conflict, and produces no game effect or automatic re-resolution.
