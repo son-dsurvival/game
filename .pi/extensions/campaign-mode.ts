@@ -9,7 +9,7 @@ const STATUS_KEY = "campaign-mode";
 type CampaignTurnEnvelope = {
   version: number;
   turnId: string;
-  mode: "off" | "shadow";
+  mode: "off" | "shadow" | "on";
   classification: "out-of-game-directive" | "in-game-input";
   input: string;
   baseline: { commit: string };
@@ -184,7 +184,7 @@ export function installCampaignModeExtension(
   pi.registerCommand("campaign", {
     description: "Show or change Campaign Mode",
     getArgumentCompletions: (prefix: string) => {
-      const modes = ["off", "shadow"];
+      const modes = ["off", "shadow", "approve-live", "on"];
       const matching = modes.filter((mode) => mode.startsWith(prefix.trim()));
       return matching.length > 0
         ? matching.map((mode) => ({ value: mode, label: mode }))
@@ -192,12 +192,18 @@ export function installCampaignModeExtension(
     },
     handler: async (args, ctx) => {
       const requested = args.trim().toLowerCase();
-      if (requested !== "off" && requested !== "shadow") {
+      if (requested === "approve-live") {
+        const approval = runtime.approveLive({ ready: true, confirmed: true });
+        publishStatus(ctx);
+        if (ctx.hasUI) ctx.ui.notify(approval.approved ? "Live Campaign Mode approved. Use /campaign on to begin live play." : "Live approval failed.", approval.approved ? "info" : "error");
+        return;
+      }
+      if (requested !== "off" && requested !== "shadow" && requested !== "on") {
         const current = publishStatus(ctx);
         if (ctx.hasUI) {
           ctx.ui.notify(
             requested
-              ? "Usage: /campaign off|shadow"
+              ? "Usage: /campaign off|shadow|approve-live|on"
               : `Campaign Mode: ${current.mode}`,
             requested ? "warning" : "info",
           );

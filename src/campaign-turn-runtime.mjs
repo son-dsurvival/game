@@ -1,8 +1,8 @@
 // @ts-check
 
-const campaignModes = new Set(["off", "shadow"]);
+const campaignModes = new Set(["off", "shadow", "on"]);
 
-/** @typedef {"off" | "shadow"} CampaignMode */
+/** @typedef {"off" | "shadow" | "on"} CampaignMode */
 /** @typedef {{ commit: string, changedItems: string[] }} BaselineInspection */
 /** @typedef {{ kind: "shell" } | { kind: "authoritative-file", target: string }} MutationRequest */
 /**
@@ -21,6 +21,7 @@ export function createCampaignTurnRuntime(options = {}) {
   /** @type {CampaignMode | undefined} */
   let activeTurnMode;
   let admissionPending = false;
+  let liveApproved = false;
   const usedTurnIds = new Set();
 
   function status() {
@@ -32,8 +33,17 @@ export function createCampaignTurnRuntime(options = {}) {
     if (!campaignModes.has(nextMode)) {
       throw new Error(`Unsupported Campaign Mode: ${nextMode}`);
     }
+    if (nextMode === "on" && !liveApproved) {
+      throw new Error("Live Campaign Mode requires explicit readiness approval");
+    }
     mode = nextMode;
     return status();
+  }
+
+  /** @param {{ ready: boolean, confirmed: boolean }} approval */
+  function approveLive(approval) {
+    liveApproved = approval.ready && approval.confirmed;
+    return { approved: liveApproved };
   }
 
   /** @param {string} rawInput */
@@ -116,6 +126,7 @@ export function createCampaignTurnRuntime(options = {}) {
   return {
     status,
     setMode,
+    approveLive,
     admitInput,
     authorizeMutation,
     releaseTurn,
